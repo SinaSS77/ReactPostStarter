@@ -1,0 +1,1 @@
+-- The purpose of this project is becoming more comfortable working with UI Libraries in React and authentication implementation.
