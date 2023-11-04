@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useBoundStore from "../../store/Store";
 import {
   TextInput,
   PasswordInput,
@@ -12,8 +15,25 @@ import {
 } from '@mantine/core';
 import classes from './Login.page.module.css';
 
-export default function LoginPage() {
+const LoginPage = () => {
+  const navigate = useNavigate();
+  const { loginService, authLoading, user } = useBoundStore((state) => state);
+
+  useEffect(() => {
+    if (!!user) {
+      navigate("/posts");
+    }
+  }, [user]);
+
+  const onLogin = async (e) => {
+    e.preventDefault();
+    let email = e.target.email?.value;
+    let password = e.target.password?.value;
+    if (!email || !password) return;
+    loginService(email, password);
+  };
   return (
+
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
         Welcome back!
@@ -24,21 +44,29 @@ export default function LoginPage() {
           Create account
         </Anchor>
       </Text>
+      <form onSubmit={onLogin}>
+        
 
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="you@mantine.dev" required />
-        <PasswordInput label="Password" placeholder="Your password" required mt="md" />
-        <Group justify="space-between" mt="lg">
-          <Checkbox label="Remember me" />
-          <Anchor component="button" size="sm">
-            Forgot password?
-          </Anchor>
-        </Group>
-        <Button fullWidth mt="xl">
-          Sign in
-        </Button>
-      </Paper>
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <TextInput label="Email" placeholder="email" name="email" type="email" required />
+            <PasswordInput label="Password" placeholder="password" name="password" type="password" required mt="md" />
+            <Group justify="space-between" mt="lg">
+              <Checkbox label="Remember me" />
+              <Anchor component="button" size="sm">
+                Forgot password?
+              </Anchor>
+            </Group>
+            <Button type="submit" fullWidth mt="xl">
+              Sign in
+            </Button>
+          </Paper>
+
+          {authLoading ? <h2>Loading...</h2> : null}
+      
+      </form>
     </Container>
-  );
-}
 
+  );
+};
+
+export default LoginPage;
