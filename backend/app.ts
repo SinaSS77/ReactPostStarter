@@ -70,4 +70,20 @@ app.post("/api/posts", (req, res) => {
   res.status(200).json({ success: true });
 });
 
+app.put("/api/posts/:id/edit", (req, res) => {
+  const postId = req.params.id;
+  const updatedPost = req.body;
+
+  // Find the post with the given ID in fake database
+  const postIndex = posts.findIndex((post) => post.id === parseInt(postId));
+
+  if (postIndex !== -1) {
+    // Update the post with the new information
+    posts[postIndex] = { ...posts[postIndex], ...updatedPost };
+    res.status(200).json({ success: true });
+  } else {
+    res.status(404).json({ error: "Post not found" });
+  }
+});
+
 app.listen(port, () => console.log("Server is running"));

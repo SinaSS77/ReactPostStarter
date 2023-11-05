@@ -2,7 +2,7 @@ import { Paper, Text, Title, Button, rem } from "@mantine/core";
 import { Link } from "react-router-dom";
 import classes from "./ArticleCardImage.module.css";
 
-export function ArticleCardImage({ title, category, image, id }) {
+export function ArticleCardImage({ title, category, image, id, content }) {
   return (
     <Paper
       shadow="md"
@@ -20,7 +20,7 @@ export function ArticleCardImage({ title, category, image, id }) {
         </Title>
       </div>
       <Button variant="white" color="dark">
-        <Link to={id.toString()}>View</Link>
+        <Link to={id.toString()} state={{ postData: { title, category, image, id, content } }}>View</Link>
       </Button>
     </Paper>
   );
