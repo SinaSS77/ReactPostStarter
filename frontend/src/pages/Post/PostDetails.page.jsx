@@ -4,10 +4,16 @@ import axios from "axios";
 import { Button, Container } from "@mantine/core";
 import { Card, Image, Avatar, Text, Group } from '@mantine/core';
 import classes from './PostDetail.page.module.css';
+import useBoundStore from '../../store/Store'
 
 function PostDetailsPage() {
+  const userEmail = useBoundStore().user.email;
   const location = useLocation();
   const { title, category, image, id, content } = location.state.postData
+  // const authorName = userEmail.replace(/@[^@]+$/, '');
+  const userEmailArray = userEmail.split('@');
+  console.log({userEmailArray})
+  const authorName = userEmailArray[0]
 
   return (
     <>
@@ -33,7 +39,7 @@ function PostDetailsPage() {
                   size={20}
                   src="https://gravatar.com/avatar/d39d8361032487a18cc3be6a0829c85d?s=800&d=robohash&r=x"
                 />
-                <Text size="xs">authour</Text>
+                <Text size="xs">{authorName}</Text>
               </Group>
             </div>
           </Group>
